@@ -143,3 +143,13 @@ class Boggle():
         # Sad panda.
 
         return False
+
+
+def main():
+    game = Boggle()
+    board = game.make_board()
+    for row in board:
+        print(row)
+
+if __name__ == '__main__':
+    main()
