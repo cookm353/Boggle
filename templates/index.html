@@ -4,7 +4,8 @@
 
 {% block content %}
 <h1>Hi!</h1>
-<table>
+
+<table id="gameBoard">
     {% for row in board %}
     <tr>
         {% for letter in row %}
@@ -14,8 +15,13 @@
     {% endfor %}
 </table>
 <br>
-<form method="post" action="/guess">
+
+<form id="guessForm">
     <input type="text" name="guess" id="guess" placeholder="Enter your guess"><br>
     <button type="submit">Submit</button>
 </form>
+
+<ul id="resultList">
+    <li>foo</li>
+</ul>
 {% endblock %}
