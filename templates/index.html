@@ -3,25 +3,35 @@
 {% block title %}Boggle{% endblock %}
 
 {% block content %}
-<h1>Hi!</h1>
+<h1>Boggle</h1>
+<div id="mainDiv">
+    <div id="gameDiv">
+        <div id="timer"></div>
+        <div id="boardDiv">
+            <table id="gameBoard">
+                {% for row in board %}
+                <tr>
+                    {% for letter in row %}
+                    <td>{{letter}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <br>
 
-<table id="gameBoard">
-    {% for row in board %}
-    <tr>
-        {% for letter in row %}
-        <td>{{letter}}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
-<br>
+        <form id="guessForm">
+            <input type="text" name="guess" id="guess" placeholder="Enter your guess">
+            <button type="submit">Submit</button>
+        </form>
 
-<form id="guessForm">
-    <input type="text" name="guess" id="guess" placeholder="Enter your guess"><br>
-    <button type="submit">Submit</button>
-</form>
+    </div>
+    
+    <div id="scoreAndWordDiv">
 
-<ul id="resultList">
-    <li>foo</li>
-</ul>
+        <ul id="resultList">
+            <li>foo</li>
+        </ul>
+    </div>
+</div>
 {% endblock %}

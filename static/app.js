@@ -28,11 +28,25 @@ async function checkGuess() {
     const resp = await axios.get(`${submitURL}?word=${guess}`)
     const result = (resp.data.result);
     
-    $resultUL.append(`<li>${guess}: ${result}</li>`)
+    showResult(guess, result)
     $formInput.val('');
-
+    
     return resp;
 }
 
 function showResult(guess, result) {
+    console.log(guess)
+    let display_result;
+    switch(result) {
+        case 'ok':
+            display_result = "Okay"            ;
+            break;
+        case 'not-word':
+            display_result = 'Not a Word';
+            break;
+        case 'not-on-board':
+            display_result = 'Not on Board'
+            break;
+    }
+    $resultUL.append(`<li>${guess}: ${display_result}</li>`)
 }

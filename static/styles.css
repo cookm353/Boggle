@@ -1,19 +1,65 @@
+/*  */
+
+
+
+h1 {
+    text-align: center;
+}
+
+#mainDiv {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+}
+
+#gameDiv {
+    margin: auto;
+    width: 40%;
+    border: 1px black solid;
+}
+
+#scoreAndWordDiv {
+    width: 40%;
+    border: 1px solid black;
+}
+
+/* Game Board Styles */
+
+#boardDiv {
+    margin: auto;
+    width: 40%;
+    /* background-color: rgba(102, 102, 255, .8); */
+    border: 3px steelblue solid;
+}
+
 table {
-    border-collapse:collapse;
-    /* border: 2px black solid; */
+    /* border-collapse: collapse; */
+    margin: auto;
+    border-collapse: separate;
+    width: 100%;
+    height: 100%;
+    border: 2px black solid;
 }
 
 td {
-    font-size: 1.2em;
+    font-size: 1.6em;
     background-color: antiquewhite;
     border: 0.5px solid black;
     text-align: center;
     padding: 1.5px;
 }
 
+form {
+    margin: auto;
+    width: 20%;
+    /* position: absolute; */
+    /* left: 25%; */
+}
+
 form > * {
     /* padding-top: 5px; */
     margin-top: 5px;
+    margin: auto;
 }
 
 
