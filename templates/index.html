@@ -7,7 +7,11 @@
 
 <div id="mainDiv">
     <div id="gameDiv"><br>
-        <div id="timer"></div>
+        <div id="timerDiv">
+            <h3>Time Remaining:</h3>&nbsp;
+            <h3 id="timer">60</h3>
+        </div>
+
         <div id="boardDiv">
             <table id="gameBoard">
                 {% for row in board %}

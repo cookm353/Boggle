@@ -1,5 +1,4 @@
-/*  */
-
+/* Main Divs */
 
 
 h1 {
@@ -92,4 +91,11 @@ input:focus {
 
 #scoreDisplay {
     display: flex;
+}
+
+/* Timer */
+
+#timerDiv {
+    display: flex;
+    justify-content: center;
 }

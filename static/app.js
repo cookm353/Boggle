@@ -67,3 +67,20 @@ function updateScoreDisplay(guess) {
     $scoreDisplay.text(newScore);
 }
 
+function updateTimer() {
+    // let $timeLeft = $('#timer').text()
+    let $timeLeft = parseInt($('#timer').text())
+    console.log($timeLeft)
+    while ($timeLeft > 0) {
+        setTimeout(() => {
+            $timeLeft -= 1;
+            console.log($timeLeft);
+        }, 1000)
+    }
+    // while ($timeLeft > 0) {
+    //     setInterval(() => {
+    //         $('#timer').text(parseInt($timeLeft) - 1) 
+    //     }, 1000)
+    // }
+    // console.log(parseInt($timeLeft))
+}
