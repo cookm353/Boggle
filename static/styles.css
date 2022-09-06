@@ -89,8 +89,9 @@ input:focus {
 
 /* Score Display */
 
-#scoreDisplay {
+.scores {
     display: flex;
+    height: 35px;
 }
 
 /* Timer */

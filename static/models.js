@@ -1,11 +1,22 @@
-class Board {
-    constructor({}) {
+class Game {
+    constructor() {
+        this.secs = 60;
+        // 
+    }
+
+    async checkGuess() {
 
     }
-}
 
-class Form {
-    constructor({}) {
+    showResult() {
+
+    }
+
+    updateScoreDisplay() {
+
+    }
+
+    tickDown() {
         
     }
 }

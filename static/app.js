@@ -5,31 +5,48 @@ const $tds = $("td");
 const $form = $("form");
 const $formInput = $("#guess");
 const $formBttn = $("#guessForm button");
+const $guessBttn = $('.clickableBttn');
 const $resultUL = $("#resultList");
 const $scoreDisplay = $('#score');
 const $invalidWordDisplay = $("#invalidWord");
+const $timer = $('#timer');
 
 let score = 0;
+let timerStarted = false;
 
-const submitURL = 'http://localhost:5000/check-word';
+const submitGuessURL = 'http://localhost:5000/check-word';
+const updateStatsURL = 'http://localhost:5000/update-stats';
 
-// Add letters to form input by clicking on them
-$board.on("click", "td", evt => {
-    const $lttr = $(evt.target).text();
-    console.log($lttr);
+
+// Add letters by clicking on them
+$tds.on('click', evt => {
+    const $guess = $('#guess').val();
+    const $lttr = $(evt.target).text().toLowerCase();
+    $formInput.val($guess + $lttr);
 })
 
-
 $form.on('click', 'button', evt => {
-    console.log("Click!");
+    evt.preventDefault()
+})
+
+$guessBttn.on('click', evt => {
     evt.preventDefault();
-    const resp = checkGuess();
+    if ( $timer.text() === '0' ) {
+    } else if ( $formInput.val() === "" ) {
+        alert("Enter a guess first!")
+    } else {
+        checkGuess();
+        if ( !timerStarted ) {
+            updateTimer();
+            timerStarted = true;
+        }
+    }
 })
 
 // Check guess and show result
 async function checkGuess() {
     const guess = $formInput.val();
-    const resp = await axios.get(`${submitURL}?word=${guess}`)
+    const resp = await axios.get(`${submitGuessURL}`, { params: { guess } })
     const result = (resp.data.result);
     
     showResult(guess, result)
@@ -39,8 +56,6 @@ async function checkGuess() {
     }
 
     $formInput.val('');
-    
-    return resp;
 }
 
 // Show word if it's valid, give error if it isn't
@@ -59,6 +74,7 @@ function showResult(guess, result) {
     }
 }
 
+
 function updateScoreDisplay(guess) {
     let currentScore = $scoreDisplay.text();
     const wordScore = guess.length;
@@ -68,19 +84,27 @@ function updateScoreDisplay(guess) {
 }
 
 function updateTimer() {
-    // let $timeLeft = $('#timer').text()
-    let $timeLeft = parseInt($('#timer').text())
-    console.log($timeLeft)
-    while ($timeLeft > 0) {
-        setTimeout(() => {
-            $timeLeft -= 1;
-            console.log($timeLeft);
-        }, 1000)
-    }
-    // while ($timeLeft > 0) {
-    //     setInterval(() => {
-    //         $('#timer').text(parseInt($timeLeft) - 1) 
-    //     }, 1000)
-    // }
-    // console.log(parseInt($timeLeft))
+    let timeLeft = parseInt($timer.text());
+
+    const timer = setInterval(() => {
+        timeLeft--;
+        $timer.text(timeLeft)
+
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            $guessBttn.off();
+        }
+    }, 10);
+}
+
+async function submitScore() {
+    const $score = $scoreDisplay.text();
+    const resp = await axios.get(`${updateStatsURL}`, { params: { score: $score } })
+    resp.data['high_score']
+    console.log(resp)
+}
+
+function updateHighScore() {
+    const $highScore = parseInt($('#high_score').text())
+    console.log($highScore)
 }
