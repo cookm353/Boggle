@@ -1,8 +1,6 @@
 /* Main Divs */
 
-
 h1 {
-    /* margin: auto; */
     text-align: center;
 }
 
@@ -16,12 +14,10 @@ h1 {
 #gameDiv {
     margin: auto;
     width: 45%;
-    /* border: 1px black solid; */
 }
 
 #scoreAndWordDiv {
     width: 45%;
-    /* border: 1px solid black; */
 }
 
 /* Game Board Styles */
@@ -56,14 +52,6 @@ td {
     width: 50%;
 }
 
-#guessForm {
-    /* margin: auto; */
-    /* width: 40%; */
-    /* position: absolute; */
-    /* left: 25%; */
-}
-
-
 #guessForm > * {
     padding-top: 5px;
     margin: auto;
@@ -74,7 +62,6 @@ input {
     border: none;
     margin-bottom: 5px;
     background-color: rgba(0, 0, 0, 0.1);
-    /* width: 50%; */
 }
 
 input:focus {
@@ -83,7 +70,6 @@ input:focus {
 }
 
 #invalidWord {
-    /* margin: auto; */
     text-align: center;
 }
 
