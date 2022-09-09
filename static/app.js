@@ -25,10 +25,12 @@ $tds.on('click', evt => {
     $formInput.val($guess + $lttr);
 })
 
+// Prevent page from refreshing when button is clicked
 $form.on('click', 'button', evt => {
     evt.preventDefault()
 })
 
+// Handle form submissions
 $guessBttn.on('click', evt => {
     evt.preventDefault();
     if ( $timer.text() === '0' ) {
@@ -74,7 +76,7 @@ function showResult(guess, result) {
     }
 }
 
-
+// Update current score with each word
 function updateScoreDisplay(guess) {
     let currentScore = $scoreDisplay.text();
     const wordScore = guess.length;
@@ -83,6 +85,7 @@ function updateScoreDisplay(guess) {
     $scoreDisplay.text(newScore);
 }
 
+// Start counting down, remove event listener after timer reaches 0 and submit score
 function updateTimer() {
     let timeLeft = parseInt($timer.text());
 
@@ -93,10 +96,12 @@ function updateTimer() {
         if (timeLeft === 0) {
             clearInterval(timer);
             $guessBttn.off();
+            submitScore()
         }
-    }, 10);
+    }, 1000);
 }
 
+// Submit score to (potentially) update high score
 async function submitScore() {
     const $score = $scoreDisplay.text();
     const resp = await axios.get(`${updateStatsURL}`, { params: { score: $score } })
