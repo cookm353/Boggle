@@ -39,4 +39,3 @@ def update_stats():
         
     return jsonify({'high_score': session['high_score'],
                     'games_played': session['games_played']})
-    return redirect('/')
