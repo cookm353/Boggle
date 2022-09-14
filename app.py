@@ -30,6 +30,7 @@ def check_word():
 def update_stats():
     # Update high score
     score = int(request.args['score'])
+    print(score)
     
     if score > session.get('high_score', 0):
         session['high_score'] = score

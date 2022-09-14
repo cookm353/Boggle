@@ -1,77 +1,109 @@
-/**
- * Functions to implement:
- * -Adding letters by clicking on board
- * -Decrementing timer
- * -Checking user's guess
- * -Add guess to word list or give feedback for invalid word
- * -Update score display
- * -Submit score and compare w/ high score
- */
- const $formInput = $("#guess");
- const submitGuessURL = 'http://localhost:5000/check-word';
+const $formInput = $("#guess");
+const submitGuessURL = 'http://localhost:5000/check-word';
 const updateStatsURL = 'http://localhost:5000/update-stats';
 
 class Game {
     constructor() {
         this.timeLeft = 60;
         this.currScore = 0;
-        this.guesses = [];
+        this.guesses = new Set();
         this.highScore, this.gamesPlayed, this.currGuess;
         this.updateStats();
     }
 
-    getGuess() {
-        return $('input').val();
-    }
-
     addLetter(letter) {
+        /**
+         * Add letter to current guess
+         * (used for clicking on letters)
+         */
         const $guess = $('input').val();
         $('input').val($guess + letter);
     }
 
-    // Decrement and update timer
     tickDown() {
+        /**
+         * Decrement and update timer
+         */
         this.timeLeft -= 1;
         $('#timer').text(this.timeLeft)
     }
     
-    async checkGuess(guess) {
+    async checkGuess() {
+        /**
+         * Check current guess
+         * Add to list of guesses if valid and update score
+         */
         this.currGuess = $formInput.val();
-        const resp = await axios.get(`${submitGuessURL}`, { params: { guess } })
-        const result = (resp.data.result);
-        
-        showResult(guess, result)
-        
-        if (result === "ok") {
-            updateScoreDisplay(guess);
-        }
-        
+
+        if (this.guesses.has(this.currGuess)) {
+            this.showInvalidWordMessage('Word Already Used');
+        } else {
+            this.guesses.add(this.currGuess);
+            const resp = await axios.get(`${submitGuessURL}`, { params: { guess: this.currGuess } })
+            const result = (resp.data.result);
+            
+            this.showResult(this.currGuess, result)
+            
+            if (result === "ok") {
+                this.updateScoreDisplay(this.currGuess);
+            } 
+        }    
         $formInput.val('');
     }
     
-    // Submit score after game timer has reached 0
-    async submitScore() {
-        pass    
-    }
-    
     async updateStats() {
-        const resp = await axios.get(`${updateStatsURL}`, { params: { score: this.currScore } });
+        /**
+         * Submit current score to server
+         * to update number of games played and (potentially)
+         * update high score
+         */
+        const score = this.currScore;
+        const resp = await axios.get(`${updateStatsURL}`, { params: { score } });
         this.highScore = resp.data.high_score;
         this.gamesPlayed = resp.data.games_played;
-        $('#high_score') = this.highScore;
+        $('#high_score').text(this.highScore);
+        
     }
     
-    showResult() {
-
+    showResult(guess, result) {
+        /**
+         * Display valid words or provide error message
+         * if word is invalid
+         */
+        let display_result;
+        
+        if (result === 'ok') {
+            $('ul').append(`<li>${guess}</li>`)
+        } else {
+            if (result === 'not-word') { 
+                display_result = 'Not a Word'; 
+            } else {
+                display_result = 'Not on Board'
+            }
+            this.showInvalidWordMessage(display_result)
+        }
     }
 
-    updateScoreDisplay() {
-        let currentScore = $scoreDisplay.text();
+    showInvalidWordMessage(display_result) {
+        /**
+         * Display message for invalid words
+         */
+        const $invalidWordDisplay = $('#invalidWord');
+
+        $invalidWordDisplay.fadeIn(0);
+        $invalidWordDisplay.text(display_result);
+        $invalidWordDisplay.fadeOut(2000);
+    }
+
+    updateScoreDisplay(guess) {
+        /**
+         * Update current score
+         */
+        let currentScore = $('#score').text();
         const wordScore = guess.length;
         const newScore = parseInt(currentScore) + wordScore;
+        this.currScore = newScore;
     
-        $scoreDisplay.text(newScore);
+        $('#score').text(newScore);
     }
-
-
 }

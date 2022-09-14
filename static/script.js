@@ -15,17 +15,25 @@ $('form').on('click', 'button', evt => {
 })
 
 // Start counting down after first guess
-// $('button').on('click', evt => {
 $bttn.on('click', evt => {
     evt.preventDefault();
-    const timer = setInterval(() => {
+    // Start timer if it hasn't been started yet
 
-        Boggle.tickDown()
+    if (Boggle.timeLeft == 60) {
+        const timer = setInterval(() => {
 
-        if (Boggle.timeLeft === 0) {
-            clearInterval(timer)
-            $bttn.off('click')
-        }
-    }, 100)
+            Boggle.tickDown();
+            
+            if (Boggle.timeLeft === 0) {
+                clearInterval(timer);
+                $bttn.off('click');
+                Boggle.updateStats();
+            }
+        }, 1000)
+    }
+    // Check guess if there's a guess
+    if ( $('#guess').val() !== "" ) {
+        Boggle.checkGuess();
+    }
 })
 
