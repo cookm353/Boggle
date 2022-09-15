@@ -20,6 +20,39 @@ class FlaskTests(TestCase):
             self.assertIsNone(session.get('games_played'))
             self.assertIn('<h3 id="timer">60</h3>', html)
         
+    def test_valid_word(self):
+        with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['board'] = [['O', 'L', 'D', 'U', 'R'],
+                                    ['W', 'D', 'C', 'J', "G"],
+                                    ['E', 'A', 'X', 'X', 'H'],
+                                    ['N', 'D', 'S', 'F', 'E'],
+                                    ['H', 'D', 'U', 'L', 'N']]
+            resp = client.get('/check-word?guess=cur')
+            self.assertEqual(resp.json['result'], 'ok')
+            
+    def test_missing_word(self):
+        with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['board'] = [['O', 'L', 'D', 'U', 'R'],
+                                    ['W', 'D', 'C', 'J', "G"],
+                                    ['E', 'A', 'X', 'X', 'H'],
+                                    ['N', 'D', 'S', 'F', 'E'],
+                                    ['H', 'D', 'U', 'L', 'N']]
+            resp = client.get('/check-word?guess=felt')
+            self.assertEqual(resp.json['result'], 'not-on-board')
+            
+    def test_non_word(self):
+        with app.test_client() as client:
+            with client.session_transaction() as session:
+                session['board'] = [['O', 'L', 'D', 'U', 'R'],
+                                    ['W', 'D', 'C', 'J', "G"],
+                                    ['E', 'A', 'X', 'X', 'H'],
+                                    ['N', 'D', 'S', 'F', 'E'],
+                                    ['H', 'D', 'U', 'L', 'N']]
+            resp = client.get('/check-word?guess=asdf')
+            self.assertEqual(resp.json['result'], 'not-word')
+    
     def test_stats(self):
         with app.test_client() as client:
             with client.session_transaction() as change_session:
